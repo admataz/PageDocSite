@@ -1,0 +1,26 @@
+# Turn on URL rewriting
+RewriteEngine On
+
+# Installation directory - set this to the path from site root or to '/' if this is running from site root
+RewriteBase /PageDocSite/
+
+# Protect hidden files from being viewed
+<Files .*>
+	Order Deny,Allow
+	Deny From All
+</Files>
+
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ $1/ [R=301,NC,L]
+
+# Protect application and system files from being viewed
+RewriteRule ^(?:app|pages|templates|modules|system)\b.* index.php/$0 [L]
+
+# Allow any files or directories that exist to be displayed directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+
+# Rewrite all other URLs to index.php/URL
+RewriteRule .* index.php/$0 [PT]
